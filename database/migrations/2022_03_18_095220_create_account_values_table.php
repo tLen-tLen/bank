@@ -19,7 +19,7 @@ return new class extends Migration
             $table->bigInteger('account_id')->unsigned();
             $table->foreign('account_id')->references('id')->on('accounts');
             $table->bigInteger('currency_id')->unsigned();
-            $table->foreign('currency_id')->references('id')->on('сurrencies');
+            $table->foreign('currency_id')->references('id')->on('currencies');
             $table->double('amount')->unsigned();
         });
     }

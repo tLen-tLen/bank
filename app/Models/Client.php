@@ -9,9 +9,9 @@ use Illuminate\Database\Eloquent\Model;
  * Клиент
  * @package App\Models
  *
- * @property string name
- * @property string phone
- * @property string email
+ * @property string $name
+ * @property string $phone
+ * @property string $email
  */
 class Client extends Model
 {

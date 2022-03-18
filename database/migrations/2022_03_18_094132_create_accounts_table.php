@@ -21,7 +21,7 @@ return new class extends Migration
             $table->bigInteger('bank_id')->unsigned();
             $table->foreign('bank_id')->references('id')->on('banks');
             $table->bigInteger('base_currency_id')->unsigned();
-            $table->foreign('base_currency_id')->references('id')->on('сurrencies');
+            $table->foreign('base_currency_id')->references('id')->on('currencies');
         });
     }
 

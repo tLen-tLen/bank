@@ -13,12 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('сourses', function (Blueprint $table) {
+        Schema::create('courses', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('currency_from_id')->unsigned();
             $table->bigInteger('currency_to_id')->unsigned();
-            $table->foreign('currency_from_id')->references('id')->on('сurrencies');
-            $table->foreign('currency_to_id')->references('id')->on('сurrencies');
+            $table->foreign('currency_from_id')->references('id')->on('currencies');
+            $table->foreign('currency_to_id')->references('id')->on('currencies');
             $table->double('amount')->unsigned();
             $table->timestamps();
         });
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('сourses');
+        Schema::dropIfExists('courses');
     }
 };
