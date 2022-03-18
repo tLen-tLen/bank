@@ -39,6 +39,27 @@ class AccountController extends Controller
                 'message' => $e->getMessage()
             ], $e->getCode());
         }
+    }
 
+    /**
+     * Получение данных о счете
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getAccount(Request $request)
+    {
+        try {
+            $amount = AccountService::getAccountAmount($request->get('account'), $request->get('currency'));
+            return response()->json([
+                'status' => 'success',
+                'amount' => $amount,
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], $e->getCode());
+        }
     }
 }

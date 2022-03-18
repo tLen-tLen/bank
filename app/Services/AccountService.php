@@ -51,4 +51,33 @@ class AccountService
             ]);
         }
     }
+
+    /**
+     * Получить информацию о счете
+     *
+     * @param int $accountId
+     * @param string|null $currency
+     * @return float
+     */
+    public static function getAccountAmount(int $accountId, ?string $currency): float
+    {
+        $result = 0;
+
+        if (empty($currency)) {
+            $currency = Account::find($accountId)->base_currency_id;
+        } else {
+            $currency = Currency::where('name', $currency)->select('id')->first()->id;
+        }
+
+        $accountValues = AccountValues::where('account_id', $accountId)->select('currency_id', 'amount')->get();
+        foreach ($accountValues as $value) {
+            if ($value->currency_id != $currency) {
+                $result += ConvertService::convert($value->currency_id, $currency, $value->amount);
+            } else {
+                $result += $value->amount;
+            }
+        }
+
+        return $result;
+    }
 }

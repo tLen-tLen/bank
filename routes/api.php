@@ -16,3 +16,4 @@ use App\Http\Controllers\AccountController;
 */
 
 Route::post('/openAccount', [AccountController::class, 'openAccount']);
+Route::get('/account', [AccountController::class, 'getAccount']);
