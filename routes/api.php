@@ -1,7 +1,8 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\CourseController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AccountController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +15,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// действия со счетом
+Route::post('/openAccount', [AccountController::class, 'openAccount']);
+Route::get('/account', [AccountController::class, 'getAccount']);
+Route::post('/changeAmount', [AccountController::class, 'changeAmount']);
+Route::post('/changeBaseCurrency', [AccountController::class, 'changeBaseCurrency']);
+
+// действия с курсом
+Route::post('/changeCourse', [CourseController::class, 'changeCourse']);
