@@ -19,6 +19,7 @@ use App\Http\Controllers\AccountController;
 Route::post('/openAccount', [AccountController::class, 'openAccount']);
 Route::get('/account', [AccountController::class, 'getAccount']);
 Route::post('/changeAmount', [AccountController::class, 'changeAmount']);
+Route::post('/changeBaseCurrency', [AccountController::class, 'changeBaseCurrency']);
 
 // действия с курсом
 Route::post('/changeCourse', [CourseController::class, 'changeCourse']);

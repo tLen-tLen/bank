@@ -67,7 +67,7 @@ class AccountService
         if (empty($currency)) {
             $currency = Account::find($accountId)->base_currency_id;
         } else {
-            $currency = Currency::where('name', $currency)->select('id')->first()->id;
+            $currency = Currency::whereName($currency)->select('id')->first()->id;
         }
 
         $accountValues = AccountValues::where('account_id', $accountId)->select('currency_id', 'amount')->get();
@@ -93,11 +93,12 @@ class AccountService
      */
     public static function changeAmount(int $accountId, string $currency, float $amount): float
     {
-        $account = AccountValues::select('id', 'amount')->where([
-            'account_id' => $accountId,
-        ])->whereHas('currency', function ($query) use ($currency) {
-            return $query->where('name', $currency);
-        })->first();
+        $account = AccountValues::select('id', 'amount')
+            ->where('account_id', $accountId)
+            ->whereHas('currency', function ($query) use ($currency) {
+                return $query->where('name', $currency);
+            })
+            ->first();
 
         if ($amount < 0 && abs($amount) > $account->amount){
             throw new InsufficientFundsException('Insufficient funds', 400);
@@ -106,5 +107,18 @@ class AccountService
         $account->amount += $amount;
         $account->save();
         return $account->amount;
+    }
+
+    /**
+     * Изменить основную валюту счета
+     *
+     * @param int $accountId
+     * @param string $currency
+     */
+    public static function changeBaseCurrency(int $accountId, string $currency): void
+    {
+        $account = Account::select('id', 'base_currency_id')->whereId($accountId)->first();
+        $account->base_currency_id = Currency::select('id')->whereName($currency)->first()->id;
+        $account->save();
     }
 }

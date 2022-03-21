@@ -88,4 +88,28 @@ class AccountController extends Controller
             ], $e->getCode());
         }
     }
+
+    /**
+     * Изменить основную валюту счета
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function changeBaseCurrency(Request $request)
+    {
+        try {
+            AccountService::changeBaseCurrency(
+                $request->get('account'),
+                $request->get('currency')
+            );
+            return response()->json([
+                'status' => 'success'
+            ]);
+        } catch (Throwable  $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], $e->getCode());
+        }
+    }
 }
