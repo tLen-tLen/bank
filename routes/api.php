@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\CourseController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AccountController;
 
@@ -15,5 +15,10 @@ use App\Http\Controllers\AccountController;
 |
 */
 
+// действия со счетом
 Route::post('/openAccount', [AccountController::class, 'openAccount']);
 Route::get('/account', [AccountController::class, 'getAccount']);
+Route::post('/changeAmount', [AccountController::class, 'changeAmount']);
+
+// действия с курсом
+Route::post('/changeCourse', [CourseController::class, 'changeCourse']);

@@ -6,7 +6,7 @@ use App\Http\Requests\CreateAccountRequest;
 use App\Services\AccountService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Mockery\Exception;
+use Throwable;
 
 class AccountController extends Controller
 {
@@ -33,7 +33,7 @@ class AccountController extends Controller
                 'status' => 'success',
                 'account' => $newAccountId,
             ]);
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
@@ -55,7 +55,33 @@ class AccountController extends Controller
                 'status' => 'success',
                 'amount' => $amount,
             ]);
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], $e->getCode());
+        }
+    }
+
+    /**
+     * Списание / пополенение счета
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function changeAmount(Request $request)
+    {
+        try {
+            $newAmount = AccountService::changeAmount(
+                $request->get('account'),
+                $request->get('currency'),
+                $request->get('amount')
+            );
+            return response()->json([
+                'status' => 'success',
+                'newAmount' => $newAmount
+            ]);
+        } catch (Throwable  $e) {
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()

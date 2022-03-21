@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 
+use App\Exceptions\InsufficientFundsException;
 use App\Models\Account;
 use App\Models\AccountValues;
 use App\Models\Currency;
@@ -79,5 +80,31 @@ class AccountService
         }
 
         return $result;
+    }
+
+    /**
+     * Изменение количества денег на счету
+     *
+     * @param int $accountId
+     * @param string $currency
+     * @param float $amount
+     * @return float
+     * @throws InsufficientFundsException
+     */
+    public static function changeAmount(int $accountId, string $currency, float $amount): float
+    {
+        $account = AccountValues::select('id', 'amount')->where([
+            'account_id' => $accountId,
+        ])->whereHas('currency', function ($query) use ($currency) {
+            return $query->where('name', $currency);
+        })->first();
+
+        if ($amount < 0 && abs($amount) > $account->amount){
+            throw new InsufficientFundsException('Insufficient funds', 400);
+        }
+
+        $account->amount += $amount;
+        $account->save();
+        return $account->amount;
     }
 }

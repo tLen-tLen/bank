@@ -29,7 +29,7 @@ class Course extends Model
      *
      * @return BelongsTo
      */
-    public function currencyFrom()
+    public function currency_from_id()
     {
         return $this->belongsTo(Currency::class, 'currency_from_id');
     }
@@ -39,7 +39,7 @@ class Course extends Model
      *
      * @return BelongsTo
      */
-    public function currencyTo()
+    public function currency_to_id()
     {
         return $this->belongsTo(Currency::class, 'currency_to_id');
     }
